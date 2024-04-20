@@ -1,5 +1,4 @@
 import os
-import shutil
 import sys
 
 def clean_data_pool(dataset, data_pool):
@@ -19,15 +18,15 @@ def clean_data_pool(dataset, data_pool):
                 print(f"Removing {file_path}")
                 os.remove(file_path) # Remove the file
                 
-    def main():
-        if len(sys.argv) != 3:
-            print("Usage: Python script.py <path_to_dataset> <path_to_data_pool>")
-            sys.exit(1)
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: Python script.py <path_to_dataset> <path_to_data_pool>")
+        sys.exit(1)
             
-        dataset_path = sys.argv[1]
-        data_pool_path = sys.argv[2]
+    dataset_path = sys.argv[1]
+    data_pool_path = sys.argv[2]
         
-        clean_data_pool(dataset_path, data_pool_path)
+    clean_data_pool(dataset_path, data_pool_path)
         
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
