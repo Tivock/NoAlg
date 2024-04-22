@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,31 +8,37 @@ def count_files_in_directory(path):
     """ Helper function to count files in a given directory """
     return sum([len(files) for r, d, files in os.walk(path)])
 
-def count_dataset(base_path):
-    counts = {
-        'Exterior Left Inswing': 0,
-        'Exterior Left Outswing': 0,
-        'Exterior Right Inswing': 0,
-        'Exterior Right Outswing': 0,
-        'Interior Left Inswing': 0,
-        'Interior Left Outswing': 0,
-        'Interior Right Inswing': 0,
-        'Interior Right Outswing': 0
-    }
+def count_dataset(base_path, location):
+    counts = {}
+    # if location == 'exterior':
+    #     counts = {
+    #         'Exterior Left Inswing': 0,
+    #         'Exterior Left Outswing': 0,
+    #         'Exterior Right Inswing': 0,
+    #         'Exterior Right Outswing': 0,
+    #     }
+    # else:
+    #     counts = {
+    #         'Interior Left Inswing': 0,
+    #         'Interior Left Outswing': 0,
+    #         'Interior Right Inswing': 0,
+    #         'Interior Right Outswing': 0
+    #     }
+
 
     categories = {
-        'Left inswing': 'Left Inswing',
-        'left outswing': 'Left Outswing',
-        'right inswing': 'Right Inswing',
-        'right outswing': 'Right Outswing'
+        'lh_in': 'Left Inswing',
+        'lh_out': 'Left Outswing',
+        'rh_in': 'Right Inswing',
+        'rh_out': 'Right Outswing'
     }
 
-    for location in ['Exterior', 'Interior']:
-        for swing_type in categories.keys():
-            directory_path = os.path.join(base_path, 'Doors', location, swing_type)
-            if os.path.exists(directory_path):
-                file_count = count_files_in_directory(directory_path)
-                counts[f"{location} {categories[swing_type]}"] = file_count
+
+    for swing_type in categories.keys():
+        directory_path = os.path.join(base_path, 'doors', location, swing_type)
+        if os.path.exists(directory_path):
+            file_count = count_files_in_directory(directory_path)
+            counts[f"{location.capitalize()} {categories[swing_type]}"] = file_count
 
     return counts
 
@@ -57,7 +64,17 @@ def plot_data(df):
     plt.show()
 
 
-dataset_path = "C:/Users/pagel/OneDrive/Documents/Tivock/DoorCNN/Dataset"  
-counts = count_dataset(dataset_path)
-df = display_table(counts)
-plot_data(df)
+base_path = "C:/Users/pagel/OneDrive/Documents/Tivock/DoorCNN/Dataset/raw_data"  
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python <file_name> <interior or exterior>")
+        sys.exit(1)
+    location = sys.argv[1]
+    counts = count_dataset(base_path, location)
+    df = display_table(counts)
+    plot_data(df)
+    
+if __name__ == '__main__':
+    main()
