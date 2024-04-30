@@ -19,6 +19,7 @@ def convert_to_jpeg(directory):
         except IOError:
             print(f"Deleted {filename} due to open or conversion error")
             os.remove(file_path)
+            
 
 def main():
     if len(sys.argv) != 2:
